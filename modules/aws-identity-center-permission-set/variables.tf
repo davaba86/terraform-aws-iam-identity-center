@@ -33,3 +33,13 @@ variable "identity_center_group_name" {
   type        = string
   default     = ""
 }
+
+variable "instance_arn" {
+  description = "The ARN of the SSO instance in case multiple AWS accounts and delegation is used."
+  type        = string
+}
+
+variable "instance_store_id" {
+  description = "The ID of the identity store in case multiple AWS accounts and delegation is used."
+  type        = string
+}
