@@ -10,7 +10,7 @@
 
 4. Create groups and assign users to those groups, along with the necessary permission set assignments for each AWS account.
 
-```json
+```hcl
 module "identity_center" {
   source = "terraform-aws-iam-identity-center"
 
