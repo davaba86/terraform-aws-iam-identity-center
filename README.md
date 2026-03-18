@@ -10,6 +10,7 @@
 
 4. Create groups and assign users to those groups, along with the necessary permission set assignments for each AWS account.
 
+````json
 module "identity_center" {
   source = "terraform-aws-iam-identity-center"
 
@@ -93,6 +94,7 @@ module "identity_center" {
     }
   ]
 }
+```
 
 As you see user membership and permission set assignments are defined at the group level, allowing for easy management of user access across multiple AWS accounts. You can customize the users, permission sets, and groups as needed for your specific use case.
 
