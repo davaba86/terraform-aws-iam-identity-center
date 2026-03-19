@@ -46,8 +46,8 @@ resource "aws_identitystore_group_membership" "this" {
   }
 
   identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
-  group_id  = aws_identitystore_group.this[each.value.group_name].group_id
-  member_id = aws_identitystore_user.this[each.value.member].user_id
+  group_id          = aws_identitystore_group.this[each.value.group_name].group_id
+  member_id         = aws_identitystore_user.this[each.value.member].user_id
 }
 
 resource "aws_ssoadmin_permission_set" "this" {
