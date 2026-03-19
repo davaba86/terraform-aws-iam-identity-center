@@ -46,7 +46,6 @@ resource "aws_identitystore_group_membership" "this" {
   }
 
   identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
-  # group_id          = data.aws_identitystore_group.this[each.value.group_name].group_id
   group_id  = aws_identitystore_group.this[each.value.group_name].group_id
   member_id = aws_identitystore_user.this[each.value.member].user_id
 }
@@ -79,7 +78,6 @@ resource "aws_ssoadmin_account_assignment" "this" {
   instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.this[each.value.ps_name].arn
 
-  # principal_id   = data.aws_identitystore_group.this[each.value.group_name].group_id
   principal_id   = aws_identitystore_group.this[each.value.group_name].group_id
   principal_type = "GROUP"
 
