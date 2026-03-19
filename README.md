@@ -98,6 +98,55 @@ module "identity_center" {
 
 As you see user membership and permission set assignments are defined at the group level, allowing for easy management of user access across multiple AWS accounts. You can customize the users, permission sets, and groups as needed for your specific use case.
 
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.14.7 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.36 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.37.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_identitystore_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/identitystore_group) | resource |
+| [aws_identitystore_group_membership.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/identitystore_group_membership) | resource |
+| [aws_identitystore_user.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/identitystore_user) | resource |
+| [aws_ssoadmin_account_assignment.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_account_assignment) | resource |
+| [aws_ssoadmin_permission_set.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssoadmin_permission_set) | resource |
+| [aws_ssoadmin_instances.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssoadmin_instances) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_aws_accounts"></a> [aws\_accounts](#input\_aws\_accounts) | A list of AWS accounts to assign permission sets to. | `map(string)` | `{}` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | The AWS region to create resources in. | `string` | `"eu-west-1"` | no |
+| <a name="input_groups"></a> [groups](#input\_groups) | A list of groups to create in Identity Center. | <pre>list(object({<br/>    name        = string<br/>    description = string<br/>    members     = optional(list(string))<br/>    permission_assignments = optional(list(object({<br/>      account_id = string<br/>      ps_name    = list(string)<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| <a name="input_permission_sets"></a> [permission\_sets](#input\_permission\_sets) | A list of permission sets to create in Identity Center. | <pre>list(object({<br/>    name             = string<br/>    description      = string<br/>    policies         = list(string)<br/>    session_duration = optional(string, "PT8H")<br/>  }))</pre> | `[]` | no |
+| <a name="input_users"></a> [users](#input\_users) | A list of users to create in Identity Center. | <pre>list(object({<br/>    user_name    = string<br/>    first_name   = string<br/>    last_name    = string<br/>    phone_number = optional(string)<br/>  }))</pre> | `[]` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_account_assignments"></a> [account\_assignments](#output\_account\_assignments) | List of account assignments created by this module |
+| <a name="output_groups"></a> [groups](#output\_groups) | Map of Identity Center groups keyed by name |
+| <a name="output_permission_sets"></a> [permission\_sets](#output\_permission\_sets) | Map of permission sets keyed by name |
+| <a name="output_users"></a> [users](#output\_users) | Map of Identity Center users keyed by user\_name |
+<!-- END_TF_DOCS -->
+
 ## License
 
 Apache 2 Licensed. See [LICENSE](LICENSE) for full details.
