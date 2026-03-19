@@ -1,3 +1,9 @@
+variable "aws_region" {
+  description = "The AWS region to create resources in."
+  type        = string
+  default     = "eu-west-1"
+}
+
 variable "aws_accounts" {
   description = "A list of AWS accounts to assign permission sets to."
   type        = map(string)

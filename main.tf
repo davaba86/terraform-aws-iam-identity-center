@@ -1,5 +1,3 @@
-data "aws_ssoadmin_instances" "this" {}
-
 resource "aws_identitystore_user" "this" {
   for_each = { for user in var.users : user.user_name => user }
 
@@ -32,21 +30,6 @@ resource "aws_identitystore_group" "this" {
   display_name      = each.value.name
   description       = each.value.description
   identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
-}
-
-data "aws_identitystore_group" "this" {
-  for_each = { for group in var.groups : group.name => group }
-
-  identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
-
-  alternate_identifier {
-    unique_attribute {
-      attribute_path  = "DisplayName"
-      attribute_value = each.value.name
-    }
-  }
-
-  depends_on = [aws_identitystore_group.this]
 }
 
 resource "aws_identitystore_group_membership" "this" {
