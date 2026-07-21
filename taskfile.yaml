@@ -1,0 +1,23 @@
+---
+version: 3
+
+env:
+  tag: v1.0.0
+
+tasks:
+  agents:sync:
+    desc: Pull latest agent config from mc-platform-agents submodule
+    cmds:
+      - git submodule update --remote .agent-config
+
+  gh-move-tag:
+    desc: Move a git tag to the latest commit on the main branch and push it to the remote repository.
+    cmds:
+      - |
+        echo "Moving tag {{.tag}} to the latest commit on the main branch and pushing it to the remote repository..."
+
+        git checkout main
+        git pull
+
+        git tag -f "{{.tag}}"
+        git push origin "{{.tag}}" --force
