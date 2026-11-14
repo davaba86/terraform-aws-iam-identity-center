@@ -6,6 +6,10 @@ on:
   pull_request:
   push:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pull-requests: read
@@ -31,6 +35,13 @@ jobs:
       - name: Terraform validate (root)
         run: terraform validate
 
+      - name: Notify Discord on failure
+        if: failure()
+        run: |
+          curl -s -X POST "${{ secrets.DISCORD_CICD_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"**PR Checks failed** on \`terraform-aws-iam-identity-center\`\nBranch: \`${{ github.ref_name }}\`\nCommit: \`${{ github.sha }}\`\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
+
   tflint:
     name: TFLint
     runs-on: ubuntu-latest
@@ -53,3 +64,10 @@ jobs:
 
       - name: Run TFLint
         run: tflint --recursive
+
+      - name: Notify Discord on failure
+        if: failure()
+        run: |
+          curl -s -X POST "${{ secrets.DISCORD_CICD_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"content\": \"**PR Checks failed** on \`terraform-aws-iam-identity-center\`\nBranch: \`${{ github.ref_name }}\`\nCommit: \`${{ github.sha }}\`\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}"
